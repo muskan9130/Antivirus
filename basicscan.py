@@ -52,6 +52,7 @@ def scan_directory(directory):
             else:
                 log_message(f"✔ Safe: {file_path}")
 
+
 if __name__ == "__main__":
     directory_to_scan = input("Enter directory to scan: ")
     scan_directory(directory_to_scan)
