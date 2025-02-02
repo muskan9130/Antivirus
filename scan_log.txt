@@ -1,0 +1,34 @@
+Scanning directory: /Users/deep/Desktop/ThreatScope
+
+✔ Safe: /Users/deep/Desktop/ThreatScope/.DS_Store
+✔ Safe: /Users/deep/Desktop/ThreatScope/dashboard_setup.py.save
+✔ Safe: /Users/deep/Desktop/ThreatScope/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/VulnerabilityScanning/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/VulnerabilityScanning/zap_scan.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/AutomatedSecurityScripting/monitor_logs.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/AutomatedSecurityScripting/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/dashboard_setup.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/elk_setup.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /suricata_config.yaml
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /run_suricata.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/BasicLogAnalysis/basic_log_analysis.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/BasicLogAnalysis/README.md
+Scanning directory: /Users/deep/Desktop/ThreatScope
+
+✔ Safe: /Users/deep/Desktop/ThreatScope/.DS_Store
+✔ Safe: /Users/deep/Desktop/ThreatScope/dashboard_setup.py.save
+✔ Safe: /Users/deep/Desktop/ThreatScope/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/VulnerabilityScanning/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/VulnerabilityScanning/zap_scan.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/AutomatedSecurityScripting/monitor_logs.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/AutomatedSecurityScripting/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/dashboard_setup.py
+✔ Safe: /Users/deep/Desktop/ThreatScope/SIEM_Dashboard/elk_setup.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /README.md
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /suricata_config.yaml
+✔ Safe: /Users/deep/Desktop/ThreatScope/IDS_Suricata /run_suricata.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/BasicLogAnalysis/basic_log_analysis.sh
+✔ Safe: /Users/deep/Desktop/ThreatScope/BasicLogAnalysis/README.md
