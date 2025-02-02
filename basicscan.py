@@ -2,7 +2,6 @@ import hashlib
 import os
 import shutil
 
-
 # Sample database of known malware hashes
 MALWARE_HASHES = {
     "5d41402abc4b2a76b9719d911017c592",  # Example hash
