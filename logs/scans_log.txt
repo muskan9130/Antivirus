@@ -1,0 +1,3 @@
+Scanning: C:/Users/Example/Virus.exe
+⚠️ Malware detected: C:/Users/Example/Virus.exe
+🚨 Quarantined: C:/Users/Example/Virus.exe
