@@ -1,58 +1,88 @@
+import sys
 import hashlib
 import os
-import shutil
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QTextEdit
+from PyQt6.QtGui import QDragEnterEvent, QDropEvent
+from PyQt6.QtCore import Qt
 
-# Sample database of known malware hashes
+# Sample malware hash database
 MALWARE_HASHES = {
-    "5d41402abc4b2a76b9719d911017c592",  # Example hash
+    "5d41402abc4b2a76b9719d911017c592",
     "e99a18c428cb38d5f260853678922e03"
 }
 
-LOG_FILE = "scan_log.txt"
-QUARANTINE_DIR = "quarantine"
-
-def log_message(message):
-    """Log messages to a file."""
-    with open(LOG_FILE, "a") as log:
-        log.write(message + "\n")
-    print(message)
-
-def calculate_file_hash(file_path):
-    """Calculate SHA256 hash of a file."""
-    hasher = hashlib.sha256()
-    try:
-        with open(file_path, 'rb') as f:
-            while chunk := f.read(4096):
-                hasher.update(chunk)
-        return hasher.hexdigest()
-    except Exception as e:
-        log_message(f"Error reading {file_path}: {e}")
-        return None
-
-def quarantine_file(file_path):
-    """Move infected file to quarantine directory."""
-    if not os.path.exists(QUARANTINE_DIR):
-        os.makedirs(QUARANTINE_DIR)
-    try:
-        shutil.move(file_path, os.path.join(QUARANTINE_DIR, os.path.basename(file_path)))
-        log_message(f"🚨 Quarantined: {file_path}")
-    except Exception as e:
-        log_message(f"Error quarantining {file_path}: {e}")
-
-def scan_directory(directory):
-    """Scan all files in a directory and check for malware."""
-    log_message(f"Scanning directory: {directory}\n")
-    for root, _, files in os.walk(directory):
-        for file in files:
-            file_path = os.path.join(root, file)
-            file_hash = calculate_file_hash(file_path)
+class AntivirusGUI(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+    
+    def initUI(self):
+        self.setWindowTitle("Python Antivirus")
+        self.setGeometry(100, 100, 500, 400)
+        self.setAcceptDrops(True)
+        
+        layout = QVBoxLayout()
+        
+        self.label = QLabel("Drag and drop a file or folder to scan")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.label)
+        
+        self.scanButton = QPushButton("Select File/Folder")
+        self.scanButton.clicked.connect(self.selectFileOrFolder)
+        layout.addWidget(self.scanButton)
+        
+        self.resultText = QTextEdit()
+        self.resultText.setReadOnly(True)
+        layout.addWidget(self.resultText)
+        
+        self.setLayout(layout)
+    
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+    
+    def dropEvent(self, event: QDropEvent):
+        for url in event.mimeData().urls():
+            path = url.toLocalFile()
+            self.scanPath(path)
+    
+    def selectFileOrFolder(self):
+        path = QFileDialog.getExistingDirectory(self, "Select Folder") or QFileDialog.getOpenFileName(self, "Select File")[0]
+        if path:
+            self.scanPath(path)
+    
+    def calculateFileHash(self, file_path):
+        hasher = hashlib.sha256()
+        try:
+            with open(file_path, 'rb') as f:
+                while chunk := f.read(4096):
+                    hasher.update(chunk)
+            return hasher.hexdigest()
+        except Exception as e:
+            return None
+    
+    def scanPath(self, path):
+        self.resultText.append(f"Scanning: {path}\n")
+        
+        if os.path.isdir(path):
+            for root, _, files in os.walk(path):
+                for file in files:
+                    self.scanFile(os.path.join(root, file))
+        else:
+            self.scanFile(path)
+    
+    def scanFile(self, file_path):
+        file_hash = self.calculateFileHash(file_path)
+        if file_hash:
             if file_hash in MALWARE_HASHES:
-                log_message(f"⚠️ Malware detected: {file_path}")
-                quarantine_file(file_path)
+                self.resultText.append(f"<span style='color:red;'>⚠ Malware detected: {file_path}</span>")
             else:
-                log_message(f"✔ Safe: {file_path}")
+                self.resultText.append(f"<span style='color:green;'>✔ Safe: {file_path}</span>")
+        else:
+            self.resultText.append(f"<span style='color:orange;'>❌ Error scanning: {file_path}</span>")
 
 if __name__ == "__main__":
-    directory_to_scan = input("Enter directory to scan: ")
-    scan_directory(directory_to_scan)
-    print("Process done")
+    app = QApplication(sys.argv)
+    window = AntivirusGUI()
+    window.show()
+    sys.exit(app.exec())
