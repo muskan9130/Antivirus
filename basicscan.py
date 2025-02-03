@@ -1,88 +1,44 @@
-import sys
-import hashlib
-import os
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QTextEdit
-from PyQt6.QtGui import QDragEnterEvent, QDropEvent
-from PyQt6.QtCore import Qt
+from scanner import scan_file
+from behavior_monitor import monitor_processes
+from ransomware import start_ransomware_detection
+from web_protection import check_url
+from sandbox import run_in_sandbox
+from ml_model import scan_with_ml
+import threading
 
-# Sample malware hash database
-MALWARE_HASHES = {
-    "5d41402abc4b2a76b9719d911017c592",
-    "e99a18c428cb38d5f260853678922e03"
-}
+def main():
+    print("🔹 Antivirus System Running...\n")
+    
+    # Start behavior monitoring in a separate thread
+    behavior_thread = threading.Thread(target=monitor_processes, daemon=True)
+    behavior_thread.start()
 
-class AntivirusGUI(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-    
-    def initUI(self):
-        self.setWindowTitle("Python Antivirus")
-        self.setGeometry(100, 100, 500, 400)
-        self.setAcceptDrops(True)
+    # Start ransomware detection
+    ransomware_thread = threading.Thread(target=start_ransomware_detection, daemon=True)
+    ransomware_thread.start()
+
+    while True:
+        choice = input("\n1. Scan File\n2. Scan URL\n3. Run in Sandbox\n4. Machine Learning Scan\n5. Exit\nChoose: ")
         
-        layout = QVBoxLayout()
+        if choice == "1":
+            file = input("Enter file path: ")
+            print(scan_file(file))
         
-        self.label = QLabel("Drag and drop a file or folder to scan")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(self.label)
+        elif choice == "2":
+            url = input("Enter URL: ")
+            print(check_url(url))
         
-        self.scanButton = QPushButton("Select File/Folder")
-        self.scanButton.clicked.connect(self.selectFileOrFolder)
-        layout.addWidget(self.scanButton)
+        elif choice == "3":
+            file = input("Enter file path: ")
+            run_in_sandbox(file)
         
-        self.resultText = QTextEdit()
-        self.resultText.setReadOnly(True)
-        layout.addWidget(self.resultText)
+        elif choice == "4":
+            file = input("Enter file path: ")
+            print(scan_with_ml(file))
         
-        self.setLayout(layout)
-    
-    def dragEnterEvent(self, event: QDragEnterEvent):
-        if event.mimeData().hasUrls():
-            event.acceptProposedAction()
-    
-    def dropEvent(self, event: QDropEvent):
-        for url in event.mimeData().urls():
-            path = url.toLocalFile()
-            self.scanPath(path)
-    
-    def selectFileOrFolder(self):
-        path = QFileDialog.getExistingDirectory(self, "Select Folder") or QFileDialog.getOpenFileName(self, "Select File")[0]
-        if path:
-            self.scanPath(path)
-    
-    def calculateFileHash(self, file_path):
-        hasher = hashlib.sha256()
-        try:
-            with open(file_path, 'rb') as f:
-                while chunk := f.read(4096):
-                    hasher.update(chunk)
-            return hasher.hexdigest()
-        except Exception as e:
-            return None
-    
-    def scanPath(self, path):
-        self.resultText.append(f"Scanning: {path}\n")
-        
-        if os.path.isdir(path):
-            for root, _, files in os.walk(path):
-                for file in files:
-                    self.scanFile(os.path.join(root, file))
-        else:
-            self.scanFile(path)
-    
-    def scanFile(self, file_path):
-        file_hash = self.calculateFileHash(file_path)
-        if file_hash:
-            if file_hash in MALWARE_HASHES:
-                self.resultText.append(f"<span style='color:red;'>⚠ Malware detected: {file_path}</span>")
-            else:
-                self.resultText.append(f"<span style='color:green;'>✔ Safe: {file_path}</span>")
-        else:
-            self.resultText.append(f"<span style='color:orange;'>❌ Error scanning: {file_path}</span>")
+        elif choice == "5":
+            print("Exiting Antivirus...")
+            break
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = AntivirusGUI()
-    window.show()
-    sys.exit(app.exec())
+    main()
