@@ -1,6 +1,6 @@
 import requests
 
-API_KEY = ""
+API_KEY = "YOUR_GOOGLE_SAFE_BROWSING_API_KEY"
 
 def check_url(url):
     payload = {

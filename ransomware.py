@@ -5,7 +5,6 @@ import os
 import time
 
 BACKUP_FOLDER = "file_backups"
-
 if not os.path.exists(BACKUP_FOLDER):
     os.makedirs(BACKUP_FOLDER)
 
