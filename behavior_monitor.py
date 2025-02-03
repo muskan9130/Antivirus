@@ -10,4 +10,5 @@ def monitor_processes():
                     print(f"⚠ Suspicious Process: {proc.info['name']} (PID: {proc.info['pid']})")
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
+                
         time.sleep(5)
