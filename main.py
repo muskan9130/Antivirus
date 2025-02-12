@@ -12,7 +12,9 @@ class AntivirusGUI(QWidget):
         super().__init__()
         self.initUI()
 
+
     def initUI(self):
+        
         self.setWindowTitle("Python Antivirus")
         self.setGeometry(100, 100, 500, 400)
         self.setAcceptDrops(True)
